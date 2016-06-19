@@ -1,6 +1,6 @@
 #!/bin/sh
 PREFIX=`/bin/pwd`
-mkdir -p lib include
+HTTP_PARSER_VER=2.7.0
 PLATFORM=`sh -c 'uname -s | tr "[A-Z]" "[a-z]"'`
 
 if [ "x${PLATFORM}" = "xdarwin" ]; then
@@ -8,6 +8,8 @@ if [ "x${PLATFORM}" = "xdarwin" ]; then
 else
 	SOEXT=so
 fi
+
+
 uv_build()
 {
 	cd libuv
@@ -25,7 +27,11 @@ parser_build()
 	cp http_parser.h ../include
 	cp libhttp_parser.*.${SOEXT} ../lib
 	cd ..
+	cd lib
+	ln -s libhttp_parser.${HTTP_PARSER_VER}.${SOEXT} libhttp_parser.${SOEXT} 
+	cd ..
 }
 
-uv_build
+#mkdir -p lib include
+#uv_build
 parser_build
