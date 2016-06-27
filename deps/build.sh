@@ -32,6 +32,6 @@ parser_build()
 	cd ..
 }
 
-#mkdir -p lib include
-#uv_build
+mkdir -p lib include
+uv_build
 parser_build
