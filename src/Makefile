@@ -3,16 +3,16 @@ DRIVER=server
 INCLUDES = -I. -I../deps/include
 LIBS = -L../deps/lib -luv -lhttp_parser
 CC = gcc
-CFLAGS =  -pipe -std=gnu99 -O -Wall -Wextra -Wpointer-arith -Wconditional-uninitialized -Wno-unused-parameter -Wno-deprecated-declarations -Werror -g
+CFLAGS =  -pipe -std=gnu11 -O0 -Wall -Wextra -Wpointer-arith -Wconditional-uninitialized -Wno-unused-parameter -Wno-deprecated-declarations -Werror -g
 
 SRCS=$(shell ls *.c)
 OBJS=$(patsubst %.c,%.o,$(SRCS))
 DEPENDS=$(patsubst %.c,%.d,$(SRCS))
 
 .SUFFIXES:	.c .o
-.PHONY:	all clean
+.PHONY:	all clean etags
 
-all: $(DRIVER)
+all: $(DRIVER) etags
 
 $(DRIVER): $(OBJS)
 	$(CC) $(CFLAGS) -o $(DRIVER) $(OBJS) $(LIBS)
@@ -28,5 +28,7 @@ $(DRIVER): $(OBJS)
 -include $(DEPENDS)
 
 clean:	
-	rm -rf $(DRIVER) *.o *.d *~
+	rm -rf $(DRIVER) *.o *.d *~ TAGS tags
 
+tags:
+	find . -name "*.[ch]" -print | xargs etags	
